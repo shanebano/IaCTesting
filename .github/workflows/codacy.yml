@@ -12,6 +12,9 @@ jobs:
   codacy-security-scan:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Set up Codacy configuration
         run: |
           echo "tools:
@@ -20,9 +23,6 @@ jobs:
               patterns:
                 - vuln
                 - misconfig" > .codacy.yaml
-
-      - name: Checkout code
-        uses: actions/checkout@v3
 
       - name: Install Codacy CLI
         run: |
