@@ -24,7 +24,7 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v3
-  
+
       - name: Run Codacy Analysis CLI
         uses: codacy/codacy-analysis-cli-action@master
         with:
@@ -32,7 +32,7 @@ jobs:
           format: sarif
           gh-code-scanning-compat: true
           max-allowed-issues: 2147483647
-  
+
       - name: Upload SARIF results file
         uses: github/codeql-action/upload-sarif@v3
         with:
