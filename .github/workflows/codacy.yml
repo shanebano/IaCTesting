@@ -33,7 +33,11 @@ jobs:
           gh-code-scanning-compat: true
           max-allowed-issues: 2147483647
 
-      - name: Upload SARIF results file
+      - name: Consolidate SARIF files
+        run: |
+          jq -s '{"runs": map(.runs) | add}' *.sarif > consolidated-results.sarif
+
+      - name: Upload Consolidated SARIF results file
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: results.sarif
+          sarif_file: consolidated-results.sarif
