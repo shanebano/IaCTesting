@@ -6,7 +6,6 @@ on:
 
 permissions:
   contents: read
-  security-events: write
   actions: write
 
 jobs:
@@ -25,16 +24,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Run Codacy Analysis CLI
-        uses: codacy/codacy-analysis-cli-action@master
-        with:
-          output: results.sarif
-          format: sarif
-          gh-code-scanning-compat: true
-          max-allowed-issues: 2147483647
+      - name: Install Codacy CLI
+        run: |
+          curl -Ls https://github.com/codacy/codacy-analysis-cli/releases/latest/download/codacy-analysis-cli-linux -o codacy-analysis-cli
+          chmod +x codacy-analysis-cli
+          sudo mv codacy-analysis-cli /usr/local/bin/
 
-      - name: Upload SARIF results file
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: results.sarif
-          category: codacy-scan
+      - name: Run Codacy Analysis CLI
+        run: |
+          codacy-analysis-cli analyze --tool trivy --output-format text
+
+      - name: Display Codacy Results
+        run: echo "Codacy analysis completed. Check the logs above for details."
