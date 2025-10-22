@@ -29,10 +29,21 @@ jobs:
           curl -Ls https://github.com/codacy/codacy-analysis-cli/releases/latest/download/codacy-analysis-cli-linux -o codacy-analysis-cli
           chmod +x codacy-analysis-cli
           sudo mv codacy-analysis-cli /usr/local/bin/
+          # Debugging: Verify installation
+          which codacy-analysis-cli
+          codacy-analysis-cli --version
+
+      - name: Debug Environment
+        run: |
+          uname -a
+          lsb_release -a || cat /etc/os-release
+          echo $PATH
 
       - name: Run Codacy Analysis CLI
         run: |
           codacy-analysis-cli analyze --tool trivy --output-format text
+          # Debugging: Check exit code
+          echo "Codacy CLI exited with code $?"
 
       - name: Display Codacy Results
         run: echo "Codacy analysis completed. Check the logs above for details."
