@@ -8,7 +8,7 @@ permissions:
   contents: read
   security-events: write
   actions: write
-
+  
 jobs:
   codacy-security-scan:
     runs-on: ubuntu-latest
@@ -35,7 +35,7 @@ jobs:
 
       - name: Consolidate SARIF files
         run: |
-          jq -s '{"runs": map(.runs) | add}' *.sarif > consolidated-results.sarif
+          jq -s '{ "version": "2.1.0", "runs": map(.runs) | add }' *.sarif > consolidated-results.sarif
 
       - name: Upload Consolidated SARIF results file
         uses: github/codeql-action/upload-sarif@v3
